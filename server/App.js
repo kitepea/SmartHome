@@ -4,7 +4,7 @@ const cors = require('cors');
 const {MONGOURI}=require("./Key")
 require('./models/User.js')
 
-const PORT =4000
+const PORT =5000
 const app=express()
 app.use(cors());
 app.use(express.json());
