@@ -3,6 +3,9 @@ const mongoose =require('mongoose')
 const cors = require('cors');
 const {MONGOURI}=require("./Key")
 require('./models/User.js')
+require('./models/Rom.js')
+require('./models/Fan.js')
+require('./models/Light.js')
 
 const PORT =5000
 const app=express()
