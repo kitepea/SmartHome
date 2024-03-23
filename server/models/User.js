@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         require: true
+    },
+    phoneNumber:{
+        type:String,
+        require: true
     }
 })
 mongoose.model("User",userSchema)
