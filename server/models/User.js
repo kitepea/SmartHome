@@ -1,21 +1,10 @@
-const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
-const userSchema = new mongoose.Schema({
-    username:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
-    email:{
-        type:String,
-        require: true
-    },
-    phoneNumber:{
-        type:String,
-        require: true
+class User {
+    constructor(username, password, email, phoneNumber ) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber  = phoneNumber ;
     }
-})
-mongoose.model("User",userSchema)
+}
+
+module.exports = User;

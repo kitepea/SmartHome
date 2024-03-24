@@ -17,25 +17,24 @@ const Login = () =>{
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-          const response = await fetch("http://localhost:5000/login", {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ username, password })
-          });
-  
-          const data = await response.json();
-  
-          if (response.ok) {
-              console.log("Đăng nhập thành công");
-              navigate("/");
-          } else {
-              console.error("Tên đăng nhập hoặc mật khẩu không đúng");
-          }
-      } catch (error) {
-          console.error("Đã xảy ra lỗi khi kiểm tra đăng nhập:", error);
-      }
+            const response = await fetch("http://localhost:5000/login", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+    
+            const data = await response.json();
+            if (!response.ok) 
+                alert(data.message);
+            else{
+                console.log("Đăng nhập thành công");
+                navigate("/");
+            }
+        } catch (error) {
+            alert(error.message);
+        }
     }      
     
     return (

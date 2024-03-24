@@ -13,9 +13,9 @@ export default function App() {
   return(
     <BrowserRouter>
       <Routes>
+        <Route path='login' element={<Login/>}/>
         <Route path="/" element={<HomePage><Home/></HomePage>} />
         <Route path='register' element = {<Register/>}/>
-        <Route path='login' element={<Login/>}/>
         <Route path='profile' element={<HomePage><Profile/></HomePage>}/>
         <Route path='history' element={<HomePage><History/></HomePage>}/>
         <Route path='menu' element={<Menu/>}/>

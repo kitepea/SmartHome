@@ -1,33 +1,13 @@
-const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
-const userSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required:true
-    },
-    state:{
-        type: Boolean,
-        required:true
-    },
-    auto_mode:{
-        type: Boolean,
-        require: true
-    },
-    threshold:{
-        type: Number,
-        require: false
-    },
-    sche_mode:{
-        type: Boolean,
-        require: true
-    },
-    ontime:{
-        type: Date,
-        require: false,
-    },
-    offtime:{
-        type: Date,
-        require: false,
+class Fan {
+    constructor(name, state, auto_mode, threshold, sche_mode, ontime, offtime) {
+        this.name = name;
+        this.state = state;
+        this.auto_mode = auto_mode;
+        this.threshold  = threshold ;
+        this.sche_mode = sche_mode;
+        this.ontime = ontime;
+        this.offtime = offtime;
     }
-})
-mongoose.model("Fan",userSchema)
+}
+
+module.exports = Fan;
