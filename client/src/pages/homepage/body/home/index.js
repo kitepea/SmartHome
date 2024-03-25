@@ -1,6 +1,6 @@
 import {memo} from 'react'
 
-const Home = () =>{
+const Profile = () =>{
     return <h1>Home</h1>
 }
-export default memo(Home);
+export default memo(Profile);

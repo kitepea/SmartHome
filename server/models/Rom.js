@@ -1,29 +1,12 @@
-const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
-const userSchema = new mongoose.Schema({
-    roomname:{
-        type:String,
-        required:true
-    },
-    temperature:{
-        type: Number,
-        required:true
-    },
-    humidity:{
-        type: Number,
-        require: true
-    },
-    brightness:{
-        type: Number,
-        require: true
-    },
-    fans:[{
-        type: ObjectId,
-        ref: "Fan"
-    }],
-    lights:[{
-        type: ObjectId,
-        ref: "Light"
-    }]
-})
-mongoose.model("Rom",userSchema)
+class Room {
+    constructor(roomname, temperature, humidity, brightness, fans, lights) {
+        this.roomname = roomname;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.brightness  = brightness ;
+        this.fans = fans;
+        this.lights = lights;
+    }
+}
+
+module.exports = Room;
