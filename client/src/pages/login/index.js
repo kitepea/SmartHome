@@ -13,7 +13,7 @@ const Login = () =>{
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
-
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -30,7 +30,8 @@ const Login = () =>{
                 alert(data.message);
             else{
                 console.log("Đăng nhập thành công");
-                navigate("/");
+                localStorage.setItem('username', username);
+                navigate('/home');
             }
         } catch (error) {
             alert(error.message);
