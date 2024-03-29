@@ -1,0 +1,100 @@
+.login__header::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -30px;
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 50%;
+    background: transparent;
+    box-shadow: -15px 0 0 0 var(--primary-color);
+}
+
+.input__box{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.input__field{
+    width: 100%;
+    height: 55px;
+    font-size: 16px;
+    background: transparent;
+    color: var(--second-color);
+    padding-inline: 20px 50px;
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+    outline: none;
+}
+
+#user{
+    margin-bottom: 10px;
+}
+
+.label{
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    transition: 0.2s;
+}
+
+.input__field:focus ~ .label,
+.input__field:valid .label{
+    position:absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 14px;
+    background-color: var(--primary-color);
+    border-radius: 30px;
+    columns: var(--black-color);
+    padding: 0 10px;
+}
+
+.icon{
+    position: absolute;
+    top: 18px;
+    right: 25px;
+    font-size: 20px;
+}
+
+.remmember__forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+}
+
+.input__submit{
+    width: 100%;
+    height: 50px;
+    background: #ececec;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.input__submit:hover{
+    background: var(--second-color);
+}
+
+.register{
+    text-align: center;
+}
+
+.register a {
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 564px) {
+    .wrapper{
+        padding: 20px;
+    }
+
+    .login__box{
+        padding: 7.5em 1.5em 4em 1.5em;
+    }
+}

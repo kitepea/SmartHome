@@ -1,0 +1,55 @@
+.header{
+    height: 120px;
+    background-color: #5551ff;
+}
+
+.header__navbar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__navbar-list{
+    list-style: none;
+    padding-left: 0;
+}
+
+.header__navbar-item{
+    margin: 0 8px;
+}
+
+.header__navbar-item,
+.header__navbar-item-link{
+    display: inline-block;
+    font-size: 1.5rem;
+    color: var(--white-color);
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.header__navbar-item-bold{
+    font-weight: 500;
+}
+
+.header__notification{
+    position: absolute;
+    top: 100%;
+    width: 404px;
+    background-color: var(--white-color);
+
+}
+
+.header_notification-header{
+
+}
+
+.header_notification-list{
+
+}
+
+.header_notification-item{
+
+}
+
+.header_notification-info{
+
+}
