@@ -8,6 +8,7 @@ import Profile from './pages/homepage/body/profile';
 import Home from './pages/homepage/body/home';
 import History from './pages/homepage/body/history';
 import Menu from './pages/menu';
+import Room from './pages/homepage/body/room';
 
 export default function App() {
 
@@ -26,6 +27,7 @@ export default function App() {
           <Route path='profile' element={isAuthenticated()?<HomePage><Profile /></HomePage>:<Navigate to="/login" />} />
           <Route path='history' element={isAuthenticated()?<HomePage><History /></HomePage>:<Navigate to="/login" />} />
           <Route path='menu' element={isAuthenticated()?<Menu />:<Navigate to="/login" />} />
+          <Route path='/:roomname' element={isAuthenticated() ? <HomePage><Room /></HomePage> : <Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
   );
