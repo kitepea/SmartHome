@@ -1,15 +1,33 @@
 import {memo} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const Profile = () =>{
+const Home = () =>{
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
     const handleLogin = async () => {
         navigate('/login');
     }
+    
+    const handleRoom = (roomname) => {
+        navigate(`/${roomname}`);
+    }
 
     if(username)
-        return <h1>Home</h1>
+        return (
+            <div>
+                <h1>Home</h1>
+                <div>
+                    <button onClick={() => handleRoom("Living")} type="submit">Living room</button>
+                    <button onClick={() => handleRoom("Bed")} type="submit">Bedroom</button>
+                    <button onClick={() => handleRoom("Kitchen")} type="submit">Kitchen</button>
+                    <button onClick={() => handleRoom("WC")} type="submit">WC</button>
+                </div>
+                <div>
+                    <h2> Recent signing in </h2>
+                </div>
+            </div>
+            
+        )
     return(
         <div>
             <p>Bạn cần phải đăng nhập</p>
@@ -17,4 +35,4 @@ const Profile = () =>{
         </div>
     )
 }
-export default memo(Profile);
+export default memo(Home);

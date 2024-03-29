@@ -15,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(require('./routes/Auth'))
+app.use(require('./routes/Room'))
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
