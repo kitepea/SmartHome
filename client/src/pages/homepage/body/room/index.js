@@ -128,7 +128,8 @@ const Room = () =>{
 
             <h2> Lights: </h2>
             <ul>
-                {room.lights.map((light, index) => (
+                {room.lights ?(
+                room.lights.map((light, index) => (
                     <li key = {index}>
                         <div>
                             <h3>{light.name}</h3>
@@ -167,7 +168,7 @@ const Room = () =>{
                             ) : <p>Schedule mode is off</p>} 
                         </div>
                     </li>
-                ))}
+                ))):(<li>None</li>)}
             </ul>
         </div>
     )
