@@ -18,11 +18,17 @@ router.post('/login', async (req, res) => {
         if (!passwordMatch)
             return res.status(401).json({ message: 'Mật khẩu sai' });
         else{
-            res.status(200).json({ message: 'Đăng nhập thành công' });
             const currentTime = new Date().toISOString();
-            const newLoginInfo = new LoginInfo(username, currentTime);
-            console.log("Thời gian hiện tại là:", currentTime);
-            await admin.database().ref('logininfo').push(newLoginInfo);
+            const loginSnapshot = await admin.database().ref('logininfo').orderByChild('username').equalTo(username).once('value');
+            const loginData = loginSnapshot.val();
+            if (loginData) {
+                const loginId = Object.keys(loginData)[0];
+                await admin.database().ref(`logininfo/${loginId}`).update({ record_time: currentTime });
+            } else {
+                const newLoginInfo = new LoginInfo(username, currentTime);
+                await admin.database().ref('logininfo').push(newLoginInfo);
+            }
+            res.status(200).json({ message: 'Đăng nhập thành công' });
         }
     }
     catch(error){
@@ -48,4 +54,18 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'Đã xảy ra lỗi khi đăng ký' });
     }
 });
+
+router.post('/logininfo', async (req, res) => {
+    try {
+        const loginInfoSnapshot = await admin.database().ref('logininfo').once('value');
+        const loginInfoData = loginInfoSnapshot.val();
+        const loginInfoArray = Object.values(loginInfoData);
+        return res.status(200).json({ logininfo: loginInfoArray });
+    }
+    catch(error){
+        console.error('Đã xảy ra lỗi:', error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi, vui lòng thử lại sau' });
+    }
+});
+
 module.exports = router;
