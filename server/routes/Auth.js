@@ -21,6 +21,7 @@ router.post('/login', async (req, res) => {
             const currentTime = new Date().toISOString();
             const loginSnapshot = await admin.database().ref('logininfo').orderByChild('username').equalTo(username).once('value');
             const loginData = loginSnapshot.val();
+            // Note: update everytime
             if (loginData) {
                 const loginId = Object.keys(loginData)[0];
                 await admin.database().ref(`logininfo/${loginId}`).update({ record_time: currentTime });

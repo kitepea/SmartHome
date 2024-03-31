@@ -29,10 +29,10 @@ const Home = () =>{
         fetchLogininfo();
 
         const intervalId = setInterval(fetchLogininfo, 30000);
-
+        // Note
         return () => clearInterval(intervalId);
     },[username]);
-    const handleLogin = async () => {
+    const handleLogin = () => {
         navigate('/login');
     }
     

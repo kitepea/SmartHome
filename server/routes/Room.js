@@ -45,7 +45,9 @@ router.post('/toggle', async (req, res) => {
 
 //Publish to adafruit
 router.post('/publish_adafruit', async (req, res) => {
-    var { feedName, value, username } = req.body;
+    // Add history to database
+    var { feedName, value } = req.body;
+    console.log("feedname: " + feedName);
     if (value)
         value = "1";
     else 

@@ -1,6 +1,7 @@
 import {memo} from 'react'
 import { useNavigate } from 'react-router-dom';
 
+// Get from users in dbs
 const Profile = () =>{
     const username = localStorage.getItem('username');
     const navigate = useNavigate();

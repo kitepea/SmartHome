@@ -14,4 +14,4 @@ const HomePage = ({children, ...props}) =>{
         </div>
     )
 }
-export default memo(HomePage);
+export default (HomePage);
