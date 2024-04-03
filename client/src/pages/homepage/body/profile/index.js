@@ -6,14 +6,21 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const username = localStorage.getItem("username");
   const [loading, setLoading] = useState(true);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
       const response = await axios.get("/profile", {
         params: { username },
       });
-      setUser(response.data.user); // Cập nhật trạng thái user với dữ liệu được trả về
+      setUser(response.data.user);
       setLoading(false);
     };
 
@@ -47,6 +54,28 @@ const Profile = () => {
     }
   };
 
+  const handleChangePassword = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post("/change-password", {
+        username,
+        currentPassword,
+        newPassword,
+      });
+      if (response.data.success) {
+        alert("Mật khẩu đã được cập nhật thành công");
+      } else {
+        alert("Có lỗi xảy ra khi cập nhật mật khẩu:", response.data.message);
+      }
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert("Đã xảy ra lỗi khi gửi yêu cầu đến máy chủ:", error.message);
+      }
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -77,6 +106,32 @@ const Profile = () => {
         <br />
         <br />
         <button type="submit">Cập nhật thông tin</button>
+      </form>
+      <br />
+      <h1>Change password</h1>
+      <form onSubmit={handleChangePassword}>
+        <label>
+          Mật khẩu hiện tại:
+          <input
+            type={showPassword ? "text" : "password"}
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Mật khẩu mới:
+          <input
+            type={showPassword ? "text" : "password"}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </label>
+        <button onClick={handleShowPassword}>
+          {showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
+        </button>
+        <br />
+        <button type="submit">Đổi mật khẩu</button>
       </form>
       <br />
       <button onClick={handleLogout}>Đăng xuất</button>

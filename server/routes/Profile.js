@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const admin = require("firebase-admin");
 
 router.get("/profile", async (req, res) => {
@@ -54,5 +55,33 @@ router.post("/profile", async (req, res) => {
   }
 });
 
+router.post("/change-password", async (req, res) => {
+  const { username, currentPassword, newPassword } = req.body;
+  try {
+    const userSnapshot = await admin
+      .database()
+      .ref("users")
+      .orderByChild("username")
+      .equalTo(username)
+      .once("value");
+    const userData = userSnapshot.val();
+    if (!userData) {
+      return res.status(404).json({ message: "Người dùng không tồn tại" });
+    }
+    const userKey = Object.keys(userData)[0];
+    const user = userData[userKey];
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Mật khẩu hiện tại không đúng" });
+    }
+    const userRef = admin.database().ref("users/" + userKey);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userRef.update({ password: hashedPassword });
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ message: "Đã xảy ra lỗi, vui lòng thử lại sau" });
+  }
+});
 
 module.exports = router;
