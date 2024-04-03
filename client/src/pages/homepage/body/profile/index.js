@@ -11,7 +11,8 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleShowPassword = () => {
+  const handleShowPassword = (event) => {
+    event.preventDefault();
     setShowPassword(!showPassword);
   };
 
