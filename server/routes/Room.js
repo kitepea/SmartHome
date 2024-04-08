@@ -96,5 +96,62 @@ router.post('/sendtime', async (req, res) => {
     }
 });
 
+router.post('/sendthreshold', async (req, res) => {
+    var { roomname, type, index, lower_threshold, upper_threshold, state } = req.body;
+    const feedName = roomname + '-' + type + '-' + String(index + 1);
+    var value = feedName + ' ' + lower_threshold + ' ' + upper_threshold ;
+    try {
+        const roomSnapshot = await admin.database().ref(`rooms`).orderByChild('roomname').equalTo(roomname).once('value');
+        const roomData = roomSnapshot.val();
+        const roomId = Object.keys(roomData)[0];
+        const room = roomData[roomId];
+        if(type === "fans")
+            var device = room.fans;
+        if(type === "lights")
+            var device = room.lights;
+        if(state){
+            device[index].auto_mode = true;
+            device[index].lower_threshold = lower_threshold;
+            device[index].upper_threshold = upper_threshold;
+        }
+        else{
+            device[index].auto_mode = false;
+            value = feedName + " OFF";
+        }
+
+        await admin.database().ref(`rooms/${roomId}`).update({ [type]: device });
+
+        client.publish("trongtin213/feeds/auto-mode", value);
+        return res.status(200).json({ message: 'Đã gửi dữ liệu lên adafruit' });
+    }
+    catch(error){
+        console.error('Đã xảy ra lỗi:', error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi, vui lòng thử lại sau' });
+    }
+});
+
+router.post('/set_environment', async (req, res) => {
+    const {envi, parameter } = req.body;
+    const roomname = "living";
+    try {
+        const roomSnapshot = await admin.database().ref(`rooms`).orderByChild('roomname').equalTo(roomname).once('value');
+        const roomData = roomSnapshot.val();
+        const roomId = Object.keys(roomData)[0];
+        const room = roomData[roomId];
+
+        if(envi === "temperature")
+            room.temperature = parseInt(parameter);
+        if(envi === "brightness")
+            room.brightness = parseInt(parameter);
+        else
+            room.humidity = parseInt(parameter);
+        await admin.database().ref(`rooms/${roomId}`).update(room);
+        return res.status(200).json({ message: 'Success' });
+    }
+    catch(error){
+        console.error('Đã xảy ra lỗi:', error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi, vui lòng thử lại sau' });
+    }
+});
 
 module.exports = router;

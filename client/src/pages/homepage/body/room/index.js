@@ -1,12 +1,14 @@
 import { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const Room = () => {
-  const { roomname } = useParams();
-  const [room, setRoom] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [timeOn, settimeOn] = useState("");
-  const [timeOff, settimeOff] = useState("");
+const Room = () =>{
+    const { roomname } = useParams();
+    const [room, setRoom] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [timeOn , settimeOn] = useState("");
+    const [timeOff , settimeOff] = useState("");
+    const [upper_threshold, setUpperThreshold] = useState("");
+    const [lower_threshold, setLowerThreshold] = useState("");
 
   // History, add time, place, user who trigger
   const Publish = async (roomname, type, index, value) => {
@@ -25,48 +27,58 @@ const Room = () => {
     }
   };
 
-  // Bật tắt theo lịch
-  const scheMode = async (roomname, type, index, timeOn, timeOff, state) => {
-    const timeOnString = timeOn.toString();
-    const timeOffString = timeOff.toString();
-    try {
-      const response = await fetch("http://localhost:5000/sendtime", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomname,
-          type,
-          index,
-          timeOn: timeOnString,
-          timeOff: timeOffString,
-          state,
-        }),
-      });
-      console.log(response);
-    } catch (error) {
-      alert(error.message);
+    const scheMode = async(roomname, type, index, timeOn, timeOff, state) =>{
+        const timeOnString = timeOn.toString();
+        const timeOffString = timeOff.toString();
+        try {
+            const response = await fetch("http://localhost:5000/sendtime", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ roomname, type, index, timeOn: timeOnString, timeOff: timeOffString, state })
+            });
+            console.log(response);
+        } catch (error) {
+            alert(error.message);
+        }
+        
     }
-  };
-  useEffect(() => {
-    const fetchRoomData = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/room", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ roomname }),
-        });
-        const data = await response.json();
-        const roomData = data.room;
-        setRoom(roomData);
-        setLoading(false);
-      } catch (error) {
-        alert(error.message);
-      }
-    };
+
+    const autoMode = async(roomname, type, index, lower_threshold, upper_threshold, state) =>{
+        try {
+            const response = await fetch("http://localhost:5000/sendthreshold", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ roomname, type, index, lower_threshold, upper_threshold, state })
+            });
+            console.log(response);
+        } catch (error) {
+            alert(error.message);
+        }
+        
+    }
+
+    useEffect(() => {
+        const fetchRoomData = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/room", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ roomname })
+                });
+                const data = await response.json();
+                const roomData = data.room;
+                setRoom(roomData);
+                setLoading(false);
+            } catch (error) {
+                alert(error.message);
+            }
+        };
 
     fetchRoomData();
 
@@ -99,123 +111,152 @@ const Room = () => {
                 </button>
               </div>
 
-              <div>
-                <h3>Schedule mode</h3>
-                <input
-                  type="time"
-                  onChange={(e) => settimeOn(e.target.value)}
-                  required
-                />
-                <input
-                  type="time"
-                  onChange={(e) => settimeOff(e.target.value)}
-                  required
-                />
-                <button
-                  onClick={() => {
-                    if (!timeOn || !timeOff) {
-                      alert("Vui lòng chọn thời gian");
-                    } else {
-                      scheMode(roomname, "fans", index, timeOn, timeOff, true);
-                    }
-                  }}
-                >
-                  Set
-                </button>
-                {fan.sche_mode ? (
-                  <div>
-                    <p>
-                      {fan.ontime}-{fan.offtime}
-                    </p>
-                    <button
-                      onClick={() =>
-                        scheMode(
-                          roomname,
-                          "fans",
-                          index,
-                          timeOn,
-                          timeOff,
-                          false
-                        )
-                      }
-                    >
-                      Delete
-                    </button>
-                  </div>
+                            <div>
+                                <h3>Schedule mode</h3>
+                                <input
+                                    type="time"
+                                    onChange={(e) => settimeOn(e.target.value)}
+                                    required
+                                />
+                                <input
+                                    type="time"
+                                    onChange={(e) => settimeOff(e.target.value)}
+                                    required
+                                />
+                                <button onClick={() => {
+                                    if (!timeOn || !timeOff) {
+                                        alert('Vui lòng chọn thời gian');
+                                    } else {
+                                        scheMode(roomname, "fans", index, timeOn, timeOff, true);
+                                    }
+                                }}>
+                                    Set
+                                </button>   
+                                {fan.sche_mode? (
+                                    <div>
+                                        <p>{fan.ontime}-{fan.offtime}</p>
+                                        <button onClick={() => scheMode( roomname, "fans", index, timeOn, timeOff, false)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                ) : <p>Schedule mode is off</p>} 
+                            </div>   
+                            <div>
+                                <h3>Automatic mode</h3>
+                                <input 
+                                    type="number" 
+                                    onChange={(e) => setLowerThreshold(e.target.value)} 
+                                />
+                                <input 
+                                    type="number" 
+                                    onChange={(e) => setUpperThreshold(e.target.value)} 
+                                />
+                                <button onClick={() => {
+                                    if (!lower_threshold||!upper_threshold) {
+                                        alert('Vui lòng đặt ngưỡng');
+                                    }
+                                    else if (lower_threshold >= upper_threshold){
+                                        alert('Vui lòng đặt lại ngưỡng');
+                                    }
+                                    else {
+                                        autoMode(roomname, "fans", index, lower_threshold, upper_threshold, true);
+                                    }
+                                }}>
+                                    Set
+                                </button>   
+                                {fan.auto_mode? (
+                                    <div>
+                                        <p>{fan.lower_threshold}-{fan.upper_threshold}</p>
+                                        <button onClick={() => autoMode( roomname, "fans", index, lower_threshold, upper_threshold, false)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                ) : <p>Automatic mode is off</p>} 
+                            </div>   
+                        </li>
+                    ))
                 ) : (
-                  <p>Schedule mode is off</p>
+                    <li>None</li>
                 )}
-              </div>
-            </li>
-          ))
-        ) : (
-          <li>None</li>
-        )}
-      </ul>
+            </ul>
 
-      <h2> Lights: </h2>
-      <ul>
-        {room.lights.map((light, index) => (
-          <li key={index}>
-            <div>
-              <h3>{light.name}</h3>
-              <button
-                onClick={() => Publish(roomname, "lights", index, !light.state)}
-              >
-                {light.state ? "ON" : "OFF"}
-              </button>
-            </div>
-            <div>
-              <h3>Schedule mode</h3>
-              <input
-                type="time"
-                onChange={(e) => settimeOn(e.target.value)}
-                required
-              />
-              <input
-                type="time"
-                onChange={(e) => settimeOff(e.target.value)}
-                required
-              />
-              <button
-                onClick={() => {
-                  if (!timeOn || !timeOff) {
-                    alert("Vui lòng chọn thời gian");
-                  } else {
-                    scheMode(roomname, "lights", index, timeOn, timeOff, true);
-                  }
-                }}
-              >
-                Set
-              </button>
-              {light.sche_mode ? (
-                <div>
-                  <p>
-                    {light.ontime}-{light.offtime}
-                  </p>
-                  <button
-                    onClick={() =>
-                      scheMode(
-                        roomname,
-                        "lights",
-                        index,
-                        timeOn,
-                        timeOff,
-                        false
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
-                </div>
-              ) : (
-                <p>Schedule mode is off</p>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+            <h2> Lights: </h2>
+            <ul>
+                {room.lights ?(
+                room.lights.map((light, index) => (
+                    <li key = {index}>
+                        <div>
+                            <h3>{light.name}</h3>
+                            <button onClick={() => Publish(roomname, "lights", index, !light.state)}>
+                                {light.state? "ON" : "OFF"}
+                            </button>
+                        </div>
+                        <div>
+                        <h3>Schedule mode</h3>
+                            <input
+                                type="time"
+                                onChange={(e) => settimeOn(e.target.value)}
+                                required
+                            />
+                            <input
+                                type="time"
+                                onChange={(e) => settimeOff(e.target.value)}
+                                required
+                            />
+                            <button onClick={() => {
+                                if (!timeOn || !timeOff) {
+                                    alert('Vui lòng chọn thời gian');
+                                } else {
+                                    scheMode(roomname, "lights", index, timeOn, timeOff, true);
+                                }
+                            }}>
+                                Set
+                            </button>   
+                            {light.sche_mode? (
+                                <div>
+                                    <p>{light.ontime}-{light.offtime}</p>
+                                    <button onClick={() => scheMode( roomname, "lights", index, timeOn, timeOff, false)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            ) : <p>Schedule mode is off</p>} 
+                                </div>
+                            <div>
+                            <h3>Automatic mode</h3>
+                            <input 
+                                type="number" 
+                                onChange={(e) => setLowerThreshold(e.target.value)} 
+                            />
+                            <input 
+                                type="number" 
+                                onChange={(e) => setUpperThreshold(e.target.value)} 
+                            />
+                            <button onClick={() => {
+                                if (!lower_threshold||!upper_threshold) {
+                                    alert('Vui lòng đặt ngưỡng');
+                                }
+                                else if (lower_threshold >= upper_threshold){
+                                    alert('Vui lòng đặt lại ngưỡng');
+                                }
+                                else {
+                                    autoMode(roomname, "lights", index, lower_threshold, upper_threshold, true);
+                                }
+                            }}>
+                                Set
+                            </button>   
+                            {light.auto_mode? (
+                                <div>
+                                    <p>{light.lower_threshold}-{light.upper_threshold}</p>
+                                    <button onClick={() => autoMode( roomname, "lights", index, lower_threshold, upper_threshold, false)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            ) : <p>Automatic mode is off</p>} 
+                        </div>   
+                    </li>
+                ))):(<li>None</li>)}
+            </ul>
+        </div>
+    )
+}   
 export default memo(Room);
