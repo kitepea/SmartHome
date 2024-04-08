@@ -25,6 +25,7 @@ const Room = () => {
     }
   };
 
+  // Bật tắt theo lịch
   const scheMode = async (roomname, type, index, timeOn, timeOff, state) => {
     const timeOnString = timeOn.toString();
     const timeOffString = timeOff.toString();
