@@ -4,19 +4,18 @@ var mqtt = require("mqtt");
 
 var client = mqtt.connect("mqtts://io.adafruit.com", {
   username: "trongtin213", // replace with username
-  password: "aio_OaaE92KfXN9R4hlRxCMObIHt5bmJ", // replace with AIO_KEY
+  password: "aio_YBJe17Spz6G7uPEM7OOLHKtT6FXQ", // replace with AIO_KEY
 });
 
 client.on("connect", function () {
   console.log("Connected to Adafruit IO MQTT Broker");
   client.subscribe("trongtin213/feeds/living-fans-1");
   client.subscribe("trongtin213/feeds/living-lights-1");
-  client.subscribe("trongtin213/feeds/bed-fans-1");
-  client.subscribe("trongtin213/feeds/bed-lights-1");
-  client.subscribe("trongtin213/feeds/kitchen-fans-1");
-  client.subscribe("trongtin213/feeds/kitchen-lights-1");
-  client.subscribe("trongtin213/feeds/wc-lights-1");
   client.subscribe("trongtin213/feeds/sche-mode");
+  client.subscribe("trongtin213/feeds/auto-mode");
+  client.subscribe("trongtin213/feeds/temperature");
+  client.subscribe("trongtin213/feeds/brightness");
+  client.subscribe("trongtin213/feeds/humidity");
 
 });
 
@@ -24,8 +23,15 @@ client.on("message", function (topic, message) {
   const topicParts = topic.split('/');
   const feedName = topicParts[topicParts.length - 1];
   console.log("Message:",feedName, message.toString());  
-  const data = feedName.split('-');
-  if(!(feedName === "sche-mode"))
+  var data = feedName.split('-');
+  if(feedName === "temperature" || feedName === "brightness" || feedName === "humidity"){
+    axios.post('http://localhost:5000/set_environment', {
+      envi : feedName,
+      parameter : message.toString()
+    })
+  }
+  else if(!(feedName === "sche-mode" || feedName === "auto-mode"))
+    
     axios.post('http://localhost:5000/toggle', {
       roomname : data[0],
       type : data[1],

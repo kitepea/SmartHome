@@ -7,6 +7,8 @@ const Room = () =>{
     const [loading, setLoading] = useState(true);
     const [timeOn , settimeOn] = useState("");
     const [timeOff , settimeOff] = useState("");
+    const [upper_threshold, setUpperThreshold] = useState("");
+    const [lower_threshold, setLowerThreshold] = useState("");
 
     const Publish = async (roomname, type, index, value) => {
         const feedName = roomname + '-' + type + '-' + String(index + 1);
@@ -41,6 +43,23 @@ const Room = () =>{
         }
         
     }
+
+    const autoMode = async(roomname, type, index, lower_threshold, upper_threshold, state) =>{
+        try {
+            const response = await fetch("http://localhost:5000/sendthreshold", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ roomname, type, index, lower_threshold, upper_threshold, state })
+            });
+            console.log(response);
+        } catch (error) {
+            alert(error.message);
+        }
+        
+    }
+
     useEffect(() => {
         const fetchRoomData = async () => {
             try {
@@ -119,6 +138,38 @@ const Room = () =>{
                                     </div>
                                 ) : <p>Schedule mode is off</p>} 
                             </div>   
+                            <div>
+                                <h3>Automatic mode</h3>
+                                <input 
+                                    type="number" 
+                                    onChange={(e) => setLowerThreshold(e.target.value)} 
+                                />
+                                <input 
+                                    type="number" 
+                                    onChange={(e) => setUpperThreshold(e.target.value)} 
+                                />
+                                <button onClick={() => {
+                                    if (!lower_threshold||!upper_threshold) {
+                                        alert('Vui lòng đặt ngưỡng');
+                                    }
+                                    else if (lower_threshold >= upper_threshold){
+                                        alert('Vui lòng đặt lại ngưỡng');
+                                    }
+                                    else {
+                                        autoMode(roomname, "fans", index, lower_threshold, upper_threshold, true);
+                                    }
+                                }}>
+                                    Set
+                                </button>   
+                                {fan.auto_mode? (
+                                    <div>
+                                        <p>{fan.lower_threshold}-{fan.upper_threshold}</p>
+                                        <button onClick={() => autoMode( roomname, "fans", index, lower_threshold, upper_threshold, false)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                ) : <p>Automatic mode is off</p>} 
+                            </div>   
                         </li>
                     ))
                 ) : (
@@ -166,7 +217,39 @@ const Room = () =>{
                                     </button>
                                 </div>
                             ) : <p>Schedule mode is off</p>} 
-                        </div>
+                                </div>
+                            <div>
+                            <h3>Automatic mode</h3>
+                            <input 
+                                type="number" 
+                                onChange={(e) => setLowerThreshold(e.target.value)} 
+                            />
+                            <input 
+                                type="number" 
+                                onChange={(e) => setUpperThreshold(e.target.value)} 
+                            />
+                            <button onClick={() => {
+                                if (!lower_threshold||!upper_threshold) {
+                                    alert('Vui lòng đặt ngưỡng');
+                                }
+                                else if (lower_threshold >= upper_threshold){
+                                    alert('Vui lòng đặt lại ngưỡng');
+                                }
+                                else {
+                                    autoMode(roomname, "lights", index, lower_threshold, upper_threshold, true);
+                                }
+                            }}>
+                                Set
+                            </button>   
+                            {light.auto_mode? (
+                                <div>
+                                    <p>{light.lower_threshold}-{light.upper_threshold}</p>
+                                    <button onClick={() => autoMode( roomname, "lights", index, lower_threshold, upper_threshold, false)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            ) : <p>Automatic mode is off</p>} 
+                        </div>   
                     </li>
                 ))):(<li>None</li>)}
             </ul>
