@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
-const client = require("../adafruit");
+const {client} = require("../adafruit");
 
-const SSE = require("express-sse");
-const sse = new SSE();
+// const SSE = require("express-sse");
+// const sse = new SSE();
 
 //Get room data
 router.post("/room", async (req, res) => {
@@ -63,9 +63,6 @@ router.post("/publish_adafruit", async (req, res) => {
   else value = "0";
   try {
     client.publish("trongtin213/feeds/" + feedName, value);
-    const event = { feedName, value };
-    sse.send(event);
-    console.log(event);
     return res.status(200).json({ message: "Đã gửi dữ liệu lên adafruit" });
   } catch (error) {
     console.error("Đã xảy ra lỗi:", error);
@@ -175,4 +172,4 @@ router.post("/set_environment", async (req, res) => {
   }
 });
 
-module.exports = {router, sse};
+module.exports = router;

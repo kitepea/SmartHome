@@ -2,20 +2,32 @@ import { useEffect, useState } from "react";
 
 const History = () => {
   const username = localStorage.getItem("username");
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState(() => {
+    const savedHistory = localStorage.getItem("history");
+    if (savedHistory) {
+      return JSON.parse(savedHistory);
+    } else {
+      return [];
+    }
+  });
 
   useEffect(() => {
     const eventSource = new EventSource("http://localhost:5000/events");
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      const [room, device, index] = data.feedName.split("-");
+      const [room, device] = data.feedName.split("-");
       const roomName = room === "living" ? "Living Room" : room;
-      const deviceName = device === "fans" ? "Fan" : device;
+      const deviceName =
+        device === "fans" ? "Fan" : "lights" ? "Light" : device;
       const config = data.value === "1" ? "On" : "Off";
       const configDate = new Date().toLocaleString("vi-VN");
       const newEvent = { roomName, deviceName, config, configDate };
-      setHistory((prevHistory) => [newEvent, ...prevHistory]);
+      setHistory((prevHistory) => {
+        const updatedHistory = [newEvent, ...prevHistory];
+        localStorage.setItem("history", JSON.stringify(updatedHistory));
+        return updatedHistory;
+      });
     };
 
     return () => {

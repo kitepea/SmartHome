@@ -1,4 +1,6 @@
 const axios = require("axios");
+const SSE = require("express-sse");
+const sse = new SSE();
 
 var mqtt = require("mqtt");
 
@@ -21,7 +23,10 @@ client.on("connect", function () {
 client.on("message", function (topic, message) {
   const topicParts = topic.split("/");
   const feedName = topicParts[topicParts.length - 1];
-  // console.log("Message:", feedName, message.toString());
+  // console.log("Message from adafruit.js:", feedName, message.toString());
+  const event = { feedName: feedName, message: message.toString() };
+  sse.send(event);
+  console.log(event);
   var data = feedName.split("-");
   if (
     feedName === "temperature" ||
@@ -40,4 +45,4 @@ client.on("message", function (topic, message) {
     });
 });
 
-module.exports = client;
+module.exports = {client, sse};

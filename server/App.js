@@ -18,10 +18,10 @@ app.use(express.json());
 
 app.use(require("./routes/Auth"));
 app.use(require("./routes/Profile"));
+app.use(require("./routes/Room"));
 app.use(compression());
 
-const { router, sse } = require("./routes/Room");
-app.use(router);
+const {sse} = require("./adafruit");
 app.get("/events", sse.init);
 
 app.listen(PORT, () => {
