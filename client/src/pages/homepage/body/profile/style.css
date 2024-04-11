@@ -1,0 +1,14 @@
+.box-card {
+  background-color: #f4f4f4;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.td {
+  line-height: 1;
+}
+
+.divider {
+  border-bottom: 1.5px solid rgb(230, 225, 225);
+}
