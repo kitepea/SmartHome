@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "./style.css";
 
 const History = () => {
   const username = localStorage.getItem("username");
@@ -36,10 +38,11 @@ const History = () => {
   }, []);
 
   return (
-    <div>
-      <table className="table">
+    <div class="table-responsive text-center">
+      <h1>Device history</h1>
+      <table class="table table-striped table-hover mt-4">
         <thead>
-          <tr>
+          <tr className="table-success">
             <th scope="col">#</th>
             <th scope="col">Room</th>
             <th scope="col">Username</th>
