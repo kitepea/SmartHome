@@ -14,14 +14,18 @@ const Header = () => {
   const navigateProfile = () => {
     navigate("/profile");
   };
+  const navigateHome = () => {
+    navigate("/home");
+  };
 
   return (
-    <div className="containter-fluid">
+    <div className="containter">
       <header
-        className="d-flex justify-content-between align-items-center p-1 sticky-top"
+        className="d-flex justify-content-between align-items-center p-1"
         style={{ background: "linear-gradient(to right, #4F41EF, #061A62)" }}
       >
         <img
+          onClick={navigateHome}
           style={{ objectFit: "cover", width: "200px", height: "100px" }}
           src="logo.png"
           alt="Logo"
