@@ -6,7 +6,7 @@ var mqtt = require("mqtt");
 
 var client = mqtt.connect("mqtts://io.adafruit.com", {
   username: "trongtin213", // replace with username
-  password: "aio_GuCf65EK4ur7zRQ2pxg53V3oXmLk", // replace with AIO_KEY
+  password: "aio_vKXh910bXivjshnU8hJQD6UmRGR7", // replace with AIO_KEY
 });
 
 client.on("connect", function () {
