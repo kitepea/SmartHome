@@ -1,0 +1,136 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.info{
+    background-color: rgb(235,234,252);
+    border-radius: 20px;
+    height: 250px;
+}
+.roomimg{
+    border-radius: 10px;
+    width: 170px;
+    height: auto;
+}
+.roomname{
+    background-color: rgb(217,217,217);
+    border-radius: 20px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.fan{
+    background-color:#2F8EFF;
+}
+
+.light{
+    background-color: #2F8EFF;
+}
+
+.back{
+    background-color: rgb(0,87,255);
+    border-radius: 20px;
+    height: 70px;
+}
+.btnout .btn{
+    font-size: 190%;
+    height: 100%;
+    width: 100%;
+    background-color: #2F8EFF; 
+    border-radius: 20px;
+}
+.switch-fan{
+    border-radius: 20px;
+    background-color: rgb(175, 245, 179);
+    height: 200px;
+}
+.switch-fan .form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.switch-fan .form-check-input:checked:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+.switch-fan .form-check-input{
+    width: 100%;
+    height: 60px;
+}
+
+.rotate {
+    transition: transform 0.5s ease;
+    transform-origin: center;
+    width: 100%;
+    height: auto;
+}
+
+.rotate.rotate-on {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.switch-light{
+    border-radius: 20px;
+    background-color: rgb(175, 245, 179);
+    height: 200px;
+}
+.switch-light .form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.switch-light .form-check-input:checked:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+.switch-light .form-check-input{
+    width: 100%;
+    height: 60px;
+}
+
+
+.schedule-fan{
+    border-radius: 20px;
+    background-color: #e88e5a;
+}
+.schedule-light{
+    border-radius: 20px;
+    background-color: #e88e5a;
+}
+.schedule-fan-state{
+    height: 100px;
+}
+.schedule-light-state{
+    height: 100px;
+}
+.auto-fan{
+    border-radius: 20px;
+    background-color: #11e384;
+}
+.auto-light{
+    border-radius: 20px;
+    background-color: #11e384;
+}
+.auto-fan-state{
+    height: 100px;
+}
+.auto-light-state{
+    height: 100px;
+}
+
+.auto-btn{
+    display: flex;
+    justify-content: center;
+}
+.chart{
+    border-radius: 20px;
+    background-color: rgb(207, 250, 250);
+}
