@@ -124,7 +124,7 @@ const Home = () => {
               Recent signing in
             </div>
             <div
-              className="my-3"
+              className="mt-3"
               style={{ height: "100vh", overflow: "auto", width: "fit-parent" }}
             >
               {loading ? (
@@ -143,7 +143,7 @@ const Home = () => {
                       <th scope="col">Date</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="fs-6">
                     {logininfo
                       .sort(
                         (a, b) =>
