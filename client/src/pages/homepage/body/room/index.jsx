@@ -9,7 +9,7 @@ import Chart from '../../../../components/LineChart';
 import { useNavigate } from 'react-router-dom';
 
 const Room = () =>{
-    const { roomname } = useParams();
+    const { roomname } =    useParams();
     const [room, setRoom] = useState(null);
     const [loading, setLoading] = useState(true);
     const [timeOnFan , settimeOnFan] = useState("");

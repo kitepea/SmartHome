@@ -1,0 +1,21 @@
+.col-lg-2::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.col-lg-2 {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.user-col {
+  width: 60%;
+}
+
+.time-col,
+.date-col {
+  width: 20%;
+}
+
+.table thead th {
+  background-color: #93a7d0;
+}
