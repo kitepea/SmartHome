@@ -17,6 +17,9 @@ const Header = () => {
   const navigateHome = () => {
     navigate("/home");
   };
+  const navigateHistory = () => {
+    navigate("/history");
+  };
 
   return (
     <div className="containter">
@@ -26,12 +29,25 @@ const Header = () => {
       >
         <img
           onClick={navigateHome}
-          style={{ objectFit: "cover", width: "200px", height: "100px" }}
+          style={{
+            objectFit: "cover",
+            width: "200px",
+            height: "100px",
+            cursor: "pointer",
+          }}
           src="logo.png"
           alt="Logo"
           className="logo"
         />
         <div className="d-flex align-items-center justify-content-between">
+          <Button
+            variant="link"
+            className="text-white me-2"
+            style={{ textDecoration: "none", cursor: "pointer" }}
+            onClick={navigateHistory}
+          >
+            History
+          </Button>
           <div
             className="btn bg-primary rounded-circle text-white text-center me-4"
             onClick={navigateProfile}

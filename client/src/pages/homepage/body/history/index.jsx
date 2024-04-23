@@ -38,32 +38,34 @@ const History = () => {
   }, []);
 
   return (
-    <div class="table-responsive text-center">
-      <h1>Device history</h1>
-      <table class="table table-striped table-hover mt-4">
-        <thead>
-          <tr className="table-success">
-            <th scope="col">#</th>
-            <th scope="col">Room</th>
-            <th scope="col">Username</th>
-            <th scope="col">Device Name</th>
-            <th scope="col">Config</th>
-            <th scope="col">Config Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {history.map((event, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>{event.roomName}</td>
-              <td>{username}</td>
-              <td>{event.deviceName}</td>
-              <td>{event.config}</td>
-              <td>{event.configDate}</td>
+    <div className="d-flex flex-column h-100 container-fluid" style={{ minHeight: "100vh" }}>
+      <div class="table-responsive text-center mb-auto">
+        <h1>Device history</h1>
+        <table class="table table-striped table-hover mt-4">
+          <thead>
+            <tr className="table-success">
+              <th scope="col">#</th>
+              <th scope="col">Room</th>
+              <th scope="col">Username</th>
+              <th scope="col">Device Name</th>
+              <th scope="col">Config</th>
+              <th scope="col">Config Date</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {history.map((event, index) => (
+              <tr key={index}>
+                <th scope="row">{index + 1}</th>
+                <td>{event.roomName}</td>
+                <td>{username}</td>
+                <td>{event.deviceName}</td>
+                <td>{event.config}</td>
+                <td>{event.configDate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
