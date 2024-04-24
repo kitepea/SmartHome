@@ -6,7 +6,7 @@ var mqtt = require("mqtt");
 
 var client = mqtt.connect("mqtts://io.adafruit.com", {
   username: "trongtin213", // replace with username
-  password: "aio_vKXh910bXivjshnU8hJQD6UmRGR7", // replace with AIO_KEY
+  password: "aio_wFzB8637vb76LhBeuSolnN75cwJY", // replace with AIO_KEY
 });
 
 client.on("connect", function () {
@@ -24,9 +24,7 @@ client.on("message", function (topic, message) {
   const topicParts = topic.split("/");
   const feedName = topicParts[topicParts.length - 1];
   // console.log("Message from adafruit.js:", feedName, message.toString());
-  const event = { feedName: feedName, message: message.toString() };
-  sse.send(event);
-  console.log(event);
+
   var data = feedName.split("-");
   if (
     feedName === "temperature" ||
@@ -37,12 +35,14 @@ client.on("message", function (topic, message) {
       envi: feedName,
       parameter: message.toString(),
     });
-  } else if (!(feedName === "sche-mode" || feedName === "auto-mode"))
+  } else if (!(feedName === "sche-mode" || feedName === "auto-mode")) {
     axios.post("http://localhost:5000/toggle", {
       roomname: data[0],
       type: data[1],
       index: Number(data[2]) - 1,
     });
+
+  }
 });
 
 module.exports = { client, sse };

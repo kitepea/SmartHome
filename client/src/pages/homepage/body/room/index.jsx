@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Room = () =>{
     const { roomname } =    useParams();
+    const username = localStorage.getItem('username')
     const [room, setRoom] = useState(null);
     const [loading, setLoading] = useState(true);
     const [timeOnFan , settimeOnFan] = useState("");
@@ -72,9 +73,12 @@ const Room = () =>{
     };
     const handleSwitchChangeFan = () => {
         Publish(roomname, "fans", 0, !room.fans[0].state);
+        History(roomname, 'fans', 0, !room.fans[0].state, username);
     };
     const handleSwitchChangeLight = () => {
         Publish(roomname, "lights", 0, !room.lights[0].state);
+        History(roomname, 'lights', 0, !room.lights[0].state, username);
+
     };
   // History, add time, place, user who trigger
   const Publish = async (roomname, type, index, value) => {
@@ -86,6 +90,20 @@ const Room = () =>{
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ feedName, value }),
+      });
+      console.log(response);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  const History = async (roomname, type, index, value, username) => {
+    try {
+      const response = await fetch("http://localhost:5000/history", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({roomname, type, index, value, username}),
       });
       console.log(response);
     } catch (error) {
@@ -385,7 +403,7 @@ const Room = () =>{
                                         progressColorFrom="#009c9a"
                                         progressSize={24}
                                         trackSize={24}
-                                        max={100}
+                                        max={300}
                                         min={0}
                                         label = "On at (% )"
                                         onChange={handleLowerThresholdChangeLight}
