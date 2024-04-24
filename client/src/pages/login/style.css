@@ -1,0 +1,20 @@
+.login-body {
+  background-image: url("https://images.unsplash.com/photo-1582135739786-3bceafcaea85?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-repeat: repeat-y;
+  background-size: cover;
+  height: 100vh;
+}
+
+.login-form {
+  & h1 {
+    color: white;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.5);
+  }
+  & label {
+    color: white;
+  }
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: inset -5px -5px rgba(0, 0, 0, 0.5);
+  border-radius: 25px;
+  border: none;
+}
