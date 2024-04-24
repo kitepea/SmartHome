@@ -73,7 +73,10 @@ router.post("/publish_adafruit", async (req, res) => {
 router.post("/sendtime", async (req, res) => {
   var { roomname, type, index, timeOn, timeOff, state } = req.body;
   const feedName = roomname + "-" + type + "-" + String(index + 1);
-  var value = feedName + " " + timeOn + " " + timeOff;
+  if(type === "fans")
+    var value = "FAN/SCH/" + timeOn + "-" + timeOff + "/";
+  else
+    var value = "LIGHT/SCH/" + timeOn + "-" + timeOff + "/";
   try {
     const roomSnapshot = await admin
       .database()
@@ -90,11 +93,11 @@ router.post("/sendtime", async (req, res) => {
       device[index].sche_mode = true;
       device[index].ontime = timeOn;
       device[index].offtime = timeOff;
+      value+="ON";
     } else {
       device[index].sche_mode = false;
-      value = feedName + " OFF";
+      value  += "OFF";
     }
-
     await admin
       .database()
       .ref(`rooms/${roomId}`)
@@ -112,7 +115,10 @@ router.post("/sendthreshold", async (req, res) => {
   var { roomname, type, index, lower_threshold, upper_threshold, state } =
     req.body;
   const feedName = roomname + "-" + type + "-" + String(index + 1);
-  var value = feedName + " " + lower_threshold + " " + upper_threshold;
+  if(type === "fans")
+    var value = "FAN/TH/" + lower_threshold + "/";
+  else
+    var value = "LIGHT/TH/" + lower_threshold + "/";
   try {
     const roomSnapshot = await admin
       .database()
@@ -129,11 +135,12 @@ router.post("/sendthreshold", async (req, res) => {
       device[index].auto_mode = true;
       device[index].lower_threshold = lower_threshold;
       device[index].upper_threshold = upper_threshold;
+      value += "ON"
     } else {
       device[index].auto_mode = false;
-      value = feedName + " OFF";
+      value += "OFF";
     }
-
+    console.log(value);
     await admin
       .database()
       .ref(`rooms/${roomId}`)

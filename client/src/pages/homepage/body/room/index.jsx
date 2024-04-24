@@ -156,6 +156,9 @@ const Room = () =>{
     if (loading) {
         return <p>Loading...</p>;
     }
+    else if(!room.fans){
+        return <p>None</p>
+    } 
     return (
         <div class = "container py-3">
             <section class = "section_top">
@@ -260,14 +263,14 @@ const Room = () =>{
                             <div class="auto-fan-state">
                                 {room.fans[0].auto_mode? (
                                     <div>
-                                        <p>The fan will be turned on at <strong>{room.fans[0].upper_threshold}°C</strong> and turned off at <strong>{room.fans[0].lower_threshold}°C</strong></p>
+                                        <p>Thresh hold is <strong>{room.fans[0].lower_threshold}°C</strong></p>
                                         <button class="btn btn-danger" onClick={() => autoMode( roomname, "fans", 0, lower_threshold_fan, upper_threshold_fan, false)}>
                                             Disable
                                         </button>
                                     </div>
                                 ) : <p>Automatic mode is <strong>OFF</strong></p>} 
                             </div>
-                            <div class="row mt-3">
+                            <div class="row mt-3 d-flex justify-content-center align-items-center">
                                 <div class="col-md-6">
                                     <CircularSlider
                                         labelColor="#005a58"
@@ -281,29 +284,13 @@ const Room = () =>{
                                         onChange={handleLowerThresholdChangeFan}
                                     />
                                 </div>
-                                <div class="col-md-6">
-                                    <CircularSlider
-                                        labelColor="#005a58"
-                                        knobColor="#005a58"
-                                        progressColorFrom="#009c9a"
-                                        progressSize={24}
-                                        trackSize={24}
-                                        max={100}
-                                        min={0}
-                                        label = "On at (°C )"
-                                        onChange={handleUpperThresholdChangeFan}
-                                    />
-                                </div>
                                 <div class="mt-3 auto-btn">
                                     <button class="btn btn-success" onClick={() => {
-                                        if (!lower_threshold_fan||!upper_threshold_fan) {
+                                        if (!lower_threshold_fan) {
                                             alert('Vui lòng đặt ngưỡng');
                                         }
-                                        else if (lower_threshold_fan >= upper_threshold_fan){
-                                            alert('Vui lòng đặt lại ngưỡng');
-                                        }
                                         else {
-                                            autoMode(roomname, "fans", 0, lower_threshold_fan, upper_threshold_fan, true);
+                                            autoMode(roomname, "fans", 0, lower_threshold_fan, 0, true);
                                         }
                                     }}>
                                         Active
@@ -383,14 +370,14 @@ const Room = () =>{
                             <div class="auto-light-state">
                                 {room.lights[0].auto_mode? (
                                     <div>
-                                        <p>The light will be turned on at <strong>{room.lights[0].upper_threshold}%</strong> and turned off at <strong>{room.lights[0].lower_threshold}%</strong></p>
+                                        <p>Thresh hold is <strong>{room.lights[0].lower_threshold}%</strong></p>
                                         <button class="btn btn-danger" onClick={() => autoMode( roomname, "lights", 0, lower_threshold_light, upper_threshold_light, false)}>
                                             Disable
                                         </button>
                                     </div>
                                 ) : <p>Automatic mode is <strong>OFF</strong></p>} 
                             </div>
-                            <div class="row mt-3">
+                            <div class="row mt-3 d-flex justify-content-center align-items-center">
                                 <div class="col-md-6">
                                     <CircularSlider
                                         labelColor="#005a58"
@@ -404,29 +391,13 @@ const Room = () =>{
                                         onChange={handleLowerThresholdChangeLight}
                                     />
                                 </div>
-                                <div class="col-md-6">
-                                    <CircularSlider
-                                        labelColor="#005a58"
-                                        knobColor="#005a58"
-                                        progressColorFrom="#009c9a"
-                                        progressSize={24}
-                                        trackSize={24}
-                                        max={100}
-                                        min={0}
-                                        label = "Off at (% )"
-                                        onChange={handleUpperThresholdChangeLight}
-                                    />
-                                </div>
                                 <div class="mt-3 auto-btn">
                                     <button class="btn btn-success" onClick={() => {
-                                        if (!lower_threshold_light||!upper_threshold_light) {
+                                        if (!lower_threshold_light) {
                                             alert('Vui lòng đặt ngưỡng');
                                         }
-                                        else if (lower_threshold_light >= upper_threshold_light){
-                                            alert('Vui lòng đặt lại ngưỡng');
-                                        }
                                         else {
-                                            autoMode(roomname, "lights", 0, lower_threshold_light, upper_threshold_light, true);
+                                            autoMode(roomname, "lights", 0, lower_threshold_light, 0, true);
                                         }
                                     }}>
                                         Active
