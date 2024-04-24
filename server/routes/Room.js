@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
 const {client} = require("../adafruit");
+const History= require('../models/History')
 
 // const SSE = require("express-sse");
 // const sse = new SSE();
@@ -68,6 +69,39 @@ router.post("/publish_adafruit", async (req, res) => {
     console.error("Đã xảy ra lỗi:", error);
     res.status(500).json({ message: "Đã xảy ra lỗi, vui lòng thử lại sau" });
   }
+});
+router.post("/history", async (req, res) => {
+  // Add history to database
+  var {roomname, type, index, value, username } = req.body;
+  console.log(req.body);
+  if(type === "fans")
+    var devicename = "FAN";
+  else
+  var devicename = "LIGHT";
+  if(value)
+    var history = new History(username, roomname, devicename, "ON", new Date().toLocaleString("vi-VN"));
+  else
+  var history = new History(username, roomname, devicename, "OFF", new Date().toLocaleString("vi-VN"));
+
+  try {
+    await admin.database().ref('history').push(history);
+    return res.status(200).json({ message: "Đã gửi dữ liệu lên adafruit" });
+  } catch (error) {
+    console.error("Đã xảy ra lỗi:", error);
+    res.status(500).json({ message: "Đã xảy ra lỗi, vui lòng thử lại sau" });
+  }
+});
+router.post("/history-info", async (req, res) => {
+  try {
+    const historyInfoSnapshot = await admin.database().ref('history').once('value');
+    const historyInfoData = historyInfoSnapshot.val();
+    const historyInfoArray = Object.values(historyInfoData);
+    return res.status(200).json( {historyInfo: historyInfoArray });
+}
+catch(error){
+    console.error('Đã xảy ra lỗi:', error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi, vui lòng thử lại sau' });
+}
 });
 
 router.post("/sendtime", async (req, res) => {
