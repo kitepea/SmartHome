@@ -17,45 +17,11 @@ const Room = () =>{
     const [timeOffFan , settimeOffFan] = useState("");
     const [timeOnLight , settimeOnLight] = useState("");
     const [timeOffLight , settimeOffLight] = useState("");
-    const [upper_threshold_fan, setUpperThreshold_fan] = useState(0);
     const [lower_threshold_fan, setLowerThreshold_fan] = useState(0);
-    const [upper_threshold_light, setUpperThreshold_light] = useState(0);
     const [lower_threshold_light, setLowerThreshold_light] = useState(0);
     const navigate = useNavigate();
 
-    const data = [
-        { name: '00:00', value1: 13, value2: 20, value3: 10 },
-        { name: '01:00', value1: 24, value2: 30, value3: 67 },
-        { name: '02:00', value1: 34, value2: 24, value3: 54 },
-        { name: '03:00', value1: 32, value2: 22, value3: 30 },
-        { name: '04:00', value1: 23, value2: 38, value3: 20 },
-        { name: '05:00', value1: 23, value2: 39, value3: 10 },
-        { name: '06:00', value1: 30, value2: 36, value3: 50 },
-        { name: '07:00', value1: 29, value2: 50, value3: 40 },
-        { name: '08:00', value1: 26, value2: 45, value3: 30 },
-        { name: '09:00', value1: 33, value2: 30, value3: 20 },
-        { name: '10:00', value1: 30, value2: 35, value3: 70 },
-        { name: '11:00', value1: 34, value2: 36, value3: 60 },
-        { name: '12:00', value1: 35, value2: 37, value3: 50 },
-        { name: '13:00', value1: 24, value2: 38, value3: 40 },
-        { name: '14:00', value1: 27, value2: 40, value3: 30 },
-        { name: '15:00', value1: 29, value2: 30, value3: 20 },
-        { name: '16:00', value1: 27, value2: 20, value3: 10 },
-        { name: '17:00', value1: 28, value2: 30, value3: 67 },
-        { name: '18:00', value1: 39, value2: 40, value3: 54 },
-        { name: '19:00', value1: 30, value2: 50, value3: 30 },
-        { name: '20:00', value1: 34, value2: 35, value3: 20 },
-        { name: '21:00', value1: 36, value2: 40, value3: 10 },
-        { name: '22:00', value1: 24, value2: 50, value3: 50 },
-        { name: '23:00', value1: 21, value2: 60, value3: 40 }
-    ];
     
-    const lines = [
-        { key: 'value1', label: 'Temperature', color: '#FF0000' },
-        { key: 'value2', label: 'Humidity', color: '#0000FF' },
-        { key: 'value3', label: 'Brightness', color: '#FFFF00' },
-    ];
-
     const handleReturn = (event) => {
         navigate('/home');
     };
@@ -65,12 +31,7 @@ const Room = () =>{
     const handleLowerThresholdChangeLight = (value) => {
         setLowerThreshold_light(value);
     };
-    const handleUpperThresholdChangeFan = (value) => {
-        setUpperThreshold_fan(value);
-    };
-    const handleUpperThresholdChangeLight = (value) => {
-        setUpperThreshold_light(value);
-    };
+
     const handleSwitchChangeFan = () => {
         Publish(roomname, "fans", 0, !room.fans[0].state);
         History(roomname, 'fans', 0, !room.fans[0].state, username);
@@ -79,6 +40,11 @@ const Room = () =>{
         Publish(roomname, "lights", 0, !room.lights[0].state);
         History(roomname, 'lights', 0, !room.lights[0].state, username);
 
+    };
+
+    const handleSwitchChangeDoor = () => {
+        Publish(roomname, "door", 0, !room.door);
+        History(roomname, 'door', 0, !room.door, username);
     };
   // History, add time, place, user who trigger
   const Publish = async (roomname, type, index, value) => {
@@ -170,6 +136,12 @@ const Room = () =>{
     // Note clearInterval
     return () => clearInterval(intervalId);
   }, [roomname]);
+  
+const lines = [
+    { key: 'value1', label: 'Temperature', color: '#FF0000' },
+    { key: 'value2', label: 'Humidity', color: '#0000FF' },
+    { key: 'value3', label: 'Brightness', color: '#FFFF00' },
+];
 
     if (loading) {
         return <p>Loading...</p>;
@@ -177,6 +149,19 @@ const Room = () =>{
     else if(!room.fans){
         return <p>None</p>
     } 
+    const data = [
+        { name: '1', value1: room.temperature[0], value2: room.humidity[0], value3: room.brightness[0] },
+        { name: '2', value1: room.temperature[1], value2: room.humidity[1], value3: room.brightness[1] },
+        { name: '3', value1: room.temperature[2], value2: room.humidity[2], value3: room.brightness[2] },
+        { name: '4', value1: room.temperature[3], value2: room.humidity[3], value3: room.brightness[3] },
+        { name: '5', value1: room.temperature[4], value2: room.humidity[4], value3: room.brightness[4] },
+        { name: '6', value1: room.temperature[5], value2: room.humidity[5], value3: room.brightness[5] },
+        { name: '7', value1: room.temperature[6], value2: room.humidity[6], value3: room.brightness[6] },
+        { name: '8', value1: room.temperature[7], value2: room.humidity[7], value3: room.brightness[7] },
+        { name: '9', value1: room.temperature[8], value2: room.humidity[8], value3: room.brightness[8] },
+        { name: '10', value1: room.temperature[9], value2: room.humidity[9], value3: room.brightness[9] }
+        
+    ];
     return (
         <div class = "container py-3">
             <section class = "section_top">
@@ -191,7 +176,9 @@ const Room = () =>{
                                 </div>
                                 
                                 <div class="col-md-8 pt-3 px-5">
-                                    <h3>Go Back</h3>
+                                        <h3>
+                                            {roomname.toUpperCase()}
+                                        </h3>
                                 </div>
                             </div>
                             <div class = "row mt-4 pe-4">
@@ -199,15 +186,24 @@ const Room = () =>{
                                     <img class="roomimg" src="https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2023/7/19/3/DOTY2023_Dramatic-Before-And-Afters_Hidden-Hills-11.jpg.rend.hgtvcom.616.411.suffix/1689786863909.jpeg" 
                                         alt="living" />
                                 </div>
-                                <div class="col-md-6 pt-2 roomname">
-                                    <h3>
-                                        {roomname.toUpperCase()}
-                                    </h3>
+                                <div class="col-md-6 ">
+                                    <div class="door mt-2 py-2 px-4">
+                                        <h5>DOOR</h5>
+                                        <div className = "form-check form-switch">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                role="switch"
+                                                checked={room.door}
+                                                onChange={handleSwitchChangeDoor}
+                                            />
+                                        </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-7 py-2 ms-3 chart">
-                            <Chart data={data} ynames={lines} domains={[-50, 100]} />
+                            <Chart data={data} ynames={lines} domains={[-50, 300]} />
                         </div>
                     </div>
                 </div>
@@ -282,7 +278,7 @@ const Room = () =>{
                                 {room.fans[0].auto_mode? (
                                     <div>
                                         <p>Thresh hold is <strong>{room.fans[0].lower_threshold}°C</strong></p>
-                                        <button class="btn btn-danger" onClick={() => autoMode( roomname, "fans", 0, lower_threshold_fan, upper_threshold_fan, false)}>
+                                        <button class="btn btn-danger" onClick={() => autoMode( roomname, "fans", 0, lower_threshold_fan, 0, false)}>
                                             Disable
                                         </button>
                                     </div>
@@ -298,7 +294,7 @@ const Room = () =>{
                                         trackSize={24}
                                         max={100}
                                         min={0}
-                                        label = "Off at (°C )"
+                                        label = "°C"
                                         onChange={handleLowerThresholdChangeFan}
                                     />
                                 </div>
@@ -389,7 +385,7 @@ const Room = () =>{
                                 {room.lights[0].auto_mode? (
                                     <div>
                                         <p>Thresh hold is <strong>{room.lights[0].lower_threshold}%</strong></p>
-                                        <button class="btn btn-danger" onClick={() => autoMode( roomname, "lights", 0, lower_threshold_light, upper_threshold_light, false)}>
+                                        <button class="btn btn-danger" onClick={() => autoMode( roomname, "lights", 0, lower_threshold_light, 0, false)}>
                                             Disable
                                         </button>
                                     </div>
@@ -405,7 +401,7 @@ const Room = () =>{
                                         trackSize={24}
                                         max={300}
                                         min={0}
-                                        label = "On at (% )"
+                                        label = "%"
                                         onChange={handleLowerThresholdChangeLight}
                                     />
                                 </div>

@@ -42,7 +42,14 @@ router.post("/toggle", async (req, res) => {
     const room = roomData[roomId];
     if (type === "fans") var device = room.fans;
     if (type === "lights") var device = room.lights;
-
+    if(type === "door"){
+      room.door = !room.door;
+      await admin
+      .database()
+      .ref(`rooms/${roomId}`)
+      .update(room);
+      return res.status(200).json({ message: "Đã cập nhật trạng thái" });
+    }
     device[index].state = !device[index].state;
     await admin
       .database()
@@ -73,11 +80,11 @@ router.post("/publish_adafruit", async (req, res) => {
 router.post("/history", async (req, res) => {
   // Add history to database
   var {roomname, type, index, value, username } = req.body;
-  console.log(req.body);
   if(type === "fans")
     var devicename = "FAN";
-  else
-  var devicename = "LIGHT";
+  else if(type === "lights")
+    var devicename = "LIGHT";
+  else var devicename = "DOOR";
   if(value)
     var history = new History(username, roomname, devicename, "ON", new Date().toLocaleString("vi-VN"));
   else
@@ -174,7 +181,6 @@ router.post("/sendthreshold", async (req, res) => {
       device[index].auto_mode = false;
       value += "OFF";
     }
-    console.log(value);
     await admin
       .database()
       .ref(`rooms/${roomId}`)
@@ -202,9 +208,32 @@ router.post("/set_environment", async (req, res) => {
     const roomId = Object.keys(roomData)[0];
     const room = roomData[roomId];
 
-    if (envi === "temperature") room.temperature = parseInt(parameter);
-    if (envi === "brightness") room.brightness = parseInt(parameter);
-    else room.humidity = parseInt(parameter);
+    if (envi === "temperature") {
+      if (!room.temperature) {
+        room.temperature = [];
+      }
+      if (room.temperature.length === 10) {
+        room.temperature.shift();
+      }
+      room.temperature.push(parseInt(parameter));
+    } else if (envi === "brightness") {
+      if (!room.brightness) {
+        room.brightness = [];
+      }
+      if (room.brightness.length === 10) {
+        room.brightness.shift();
+      }
+      room.brightness.push(parseInt(parameter));
+    } else {
+      if (!room.humidity) {
+        room.humidity = [];
+      }
+      if (room.humidity.length === 10) {
+        room.humidity.shift();
+      }
+      room.humidity.push(parseInt(parameter));
+    }
+    
     await admin.database().ref(`rooms/${roomId}`).update(room);
     return res.status(200).json({ message: "Success" });
   } catch (error) {
@@ -212,5 +241,6 @@ router.post("/set_environment", async (req, res) => {
     res.status(500).json({ message: "Đã xảy ra lỗi, vui lòng thử lại sau" });
   }
 });
+
 
 module.exports = router;
