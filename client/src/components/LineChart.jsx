@@ -20,7 +20,7 @@ const Chart = ({ data, ynames, domains }) => {
             </div>
             <LineChart width={600} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" label={{ value: 'Hour ago', position: 'insideBottomRight', dy:10 }} />
+                <XAxis dataKey="name" label={{ value: 'Seconds ago', position: 'insideBottomRight', dy:10 }} />
                 <YAxis domain={domains} label={{ angle: -90, position: 'insideLeft' }} />
                 <Tooltip />
                 {ynames.map((yname, index) => (

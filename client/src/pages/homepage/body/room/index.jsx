@@ -150,15 +150,15 @@ const lines = [
         return <p>None</p>
     } 
     const data = [
-        { name: '1', value1: room.temperature[0], value2: room.humidity[0], value3: room.brightness[0] },
-        { name: '2', value1: room.temperature[1], value2: room.humidity[1], value3: room.brightness[1] },
-        { name: '3', value1: room.temperature[2], value2: room.humidity[2], value3: room.brightness[2] },
-        { name: '4', value1: room.temperature[3], value2: room.humidity[3], value3: room.brightness[3] },
-        { name: '5', value1: room.temperature[4], value2: room.humidity[4], value3: room.brightness[4] },
-        { name: '6', value1: room.temperature[5], value2: room.humidity[5], value3: room.brightness[5] },
-        { name: '7', value1: room.temperature[6], value2: room.humidity[6], value3: room.brightness[6] },
-        { name: '8', value1: room.temperature[7], value2: room.humidity[7], value3: room.brightness[7] },
-        { name: '9', value1: room.temperature[8], value2: room.humidity[8], value3: room.brightness[8] },
+        { name: '100', value1: room.temperature[0], value2: room.humidity[0], value3: room.brightness[0] },
+        { name: '90', value1: room.temperature[1], value2: room.humidity[1], value3: room.brightness[1] },
+        { name: '80', value1: room.temperature[2], value2: room.humidity[2], value3: room.brightness[2] },
+        { name: '70', value1: room.temperature[3], value2: room.humidity[3], value3: room.brightness[3] },
+        { name: '60', value1: room.temperature[4], value2: room.humidity[4], value3: room.brightness[4] },
+        { name: '50', value1: room.temperature[5], value2: room.humidity[5], value3: room.brightness[5] },
+        { name: '40', value1: room.temperature[6], value2: room.humidity[6], value3: room.brightness[6] },
+        { name: '30', value1: room.temperature[7], value2: room.humidity[7], value3: room.brightness[7] },
+        { name: '20', value1: room.temperature[8], value2: room.humidity[8], value3: room.brightness[8] },
         { name: '10', value1: room.temperature[9], value2: room.humidity[9], value3: room.brightness[9] }
         
     ];
